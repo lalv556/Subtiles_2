@@ -329,7 +329,6 @@ def returnShapes(n):
 
     for unique_shape in previous_shapes:
         shapes = generated_shapes[:]
-        created_shapes = []
         created_shapes = extend_shape(unique_shape, rows, columns, n, shapes)
         for new_shape in created_shapes:
             generated_shapes.append(new_shape)
