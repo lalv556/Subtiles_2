@@ -1,6 +1,6 @@
 Made to address the following Jane Street puzzle and other general grids (https://www.janestreet.com/puzzles/subtiles-2-index/)
 
-![](images/subtiles-2.jpg)
+<img src="Images/subtiles-2.jpg" width=500>
 
 Place positive integers in some of the cells above, so that the grid contains one 1, two 2’s, three 3’s, and so on, up to N N’s. (For some N.)
 
