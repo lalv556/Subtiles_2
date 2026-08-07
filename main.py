@@ -296,7 +296,7 @@ print(check_redundance(new, test_arr, 4))
 
 #format_polyomino(c, 4)
 
-def returnShapes(n):
+def returnShapes(n, use_saved=False):
     if n == 1:
         return [[
                 [n]
@@ -314,7 +314,14 @@ def returnShapes(n):
     rows = (n+1) // 2
     columns = n
 
-    previous_shapes = returnShapes(n-1)
+    if use_saved:
+        try:
+            with open(f"polyominoes_{n-1}.json") as file:
+                previous_shapes = json.load(file)
+        except FileNotFoundError:
+            previous_shapes = returnShapes(n-1, use_saved)
+    else:
+        previous_shapes = returnShapes(n-1)
 
     for shape in previous_shapes:
         set_values(shape, n)
@@ -341,7 +348,7 @@ def save_shapes(shapes, n):
         json.dump(shapes, file)
 
 num = 10
-a = returnShapes(num)
+a = returnShapes(num, use_saved=True)
 save_shapes(a, num)
 
 for i in a:
