@@ -1,4 +1,5 @@
 import json
+import os
 import test_cases
 
 def getMax(matrix):
@@ -193,10 +194,6 @@ def check_redundance(current_shape, shapes_arr, n):
 
 def try_add_shape(new_shape, shapes, n):
     if check_redundance(new_shape, shapes, n) == False:
-        print("----------")
-        for i in new_shape:
-            print(i)
-        print("----------")
         make_square(new_shape)
         format_polyomino(new_shape, n)
         shapes.append(new_shape)    
@@ -291,7 +288,8 @@ new = [
 
 #print(check_equality(a,b))
 
-print(check_redundance(new, test_arr, 4))
+if __name__ == "__main__":
+    print(check_redundance(new, test_arr, 4))
 #print(check_equality(c,d))
 
 #format_polyomino(c, 4)
@@ -305,8 +303,8 @@ def returnShapes(n, use_saved=False):
         return [[
                 [n, n]
                 ]]
-    elif n < 0 or n > 17:
-        raise ValueError(f"n must be between 0 and 17 not {n}")
+    elif n < 1 or n > 17:
+        raise ValueError(f"n must be between 1 and 17 not {n}")
     
     shapes = []
     generated_shapes = []
@@ -316,7 +314,7 @@ def returnShapes(n, use_saved=False):
 
     if use_saved:
         try:
-            with open(f"polyominoes_{n-1}.json") as file:
+            with open(f"results/polyominoes_{n-1}.json") as file:
                 previous_shapes = json.load(file)
         except FileNotFoundError:
             previous_shapes = returnShapes(n-1, use_saved)
@@ -344,25 +342,27 @@ def returnShapes(n, use_saved=False):
     #returnShapes(n-1)
 
 def save_shapes(shapes, n):
-    with open(f"polyominoes_{n}.json", "w") as file:
+    os.makedirs("results", exist_ok=True)
+    with open(f"results/polyominoes_{n}.json", "w") as file:
         json.dump(shapes, file)
 
-num = 10
-a = returnShapes(num, use_saved=True)
-save_shapes(a, num)
+if __name__ == "__main__":
+    num = 9
+    a = returnShapes(num, use_saved=True)
+    save_shapes(a, num)
 
-for i in a:
-    for j in i:
-        print(j)
-    print("-------------")
+    for i in a:
+        for j in i:
+            print(j)
+        print("-------------")
 
-#Expected number of polyominos for each k-1
-polyominos_series = [1, 1, 2, 5, 12, 35, 108, 369, 1285, 4655, 17073, 63600, 238591, 901971, 3426576, 13079255]
+    #Expected number of polyominos for each k-1
+    polyominos_series = [1, 1, 2, 5, 12, 35, 108, 369, 1285, 4655, 17073, 63600, 238591, 901971, 3426576, 13079255, 50107909]
 
-if len(a) == polyominos_series[num-1]:
-    print(f"CORRECT: \n LENGTH: {len(a)} \n TARGET: {polyominos_series[num-1]}")
-else:
-    print(f"INCORRECT \n LENGTH: {len(a)} \n TARGET: {polyominos_series[num-1]}")
+    if len(a) == polyominos_series[num-1]:
+        print(f"CORRECT: \n LENGTH: {len(a)} \n TARGET: {polyominos_series[num-1]}")
+    else:
+        print(f"INCORRECT \n LENGTH: {len(a)} \n TARGET: {polyominos_series[num-1]}")
 
 #for i in a :
 #    for j in range(len(i)):
