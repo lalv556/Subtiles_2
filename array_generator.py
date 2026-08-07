@@ -347,7 +347,7 @@ def save_shapes(shapes, n):
         json.dump(shapes, file)
 
 if __name__ == "__main__":
-    num = 9
+    num = 2
     a = returnShapes(num, use_saved=True)
     save_shapes(a, num)
 
