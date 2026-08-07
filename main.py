@@ -1,3 +1,4 @@
+import json
 import test_cases
 
 def getMax(matrix):
@@ -335,8 +336,13 @@ def returnShapes(n):
 
     #returnShapes(n-1)
 
-num = 4
+def save_shapes(shapes, n):
+    with open(f"polyominoes_{n}.json", "w") as file:
+        json.dump(shapes, file)
+
+num = 10
 a = returnShapes(num)
+save_shapes(a, num)
 
 for i in a:
     for j in i:
@@ -347,7 +353,7 @@ for i in a:
 polyominos_series = [1, 1, 2, 5, 12, 35, 108, 369, 1285, 4655, 17073, 63600, 238591, 901971, 3426576, 13079255]
 
 if len(a) == polyominos_series[num-1]:
-    print(f"CORRECT: {polyominos_series[num-1]}")
+    print(f"CORRECT: \n LENGTH: {len(a)} \n TARGET: {polyominos_series[num-1]}")
 else:
     print(f"INCORRECT \n LENGTH: {len(a)} \n TARGET: {polyominos_series[num-1]}")
 
