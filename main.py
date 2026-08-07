@@ -41,20 +41,10 @@ def removeColumn(n, matrix):
 
 #Get a more descriptive function name
 #Check if the function works for larger matrices
-def make_square(matrix, cols_to_rem):
-    #Could potentially add check to see if input matrix is correct size but would slow process
-    for _ in range(cols_to_rem):
-        column_removed = False
-        for i in range(len(matrix[0])):
-            if matrix[-2][i] == 0:
-                for j in matrix:
-                    if j[i] != 0:
-                        break
-                else:
-                    removeColumn(i, matrix)
-                    column_removed = True
-            if column_removed == True:
-                break
+def make_square(matrix):
+    #Pad with empty rows so rotate_90 works on any shape width
+    while len(matrix) < len(matrix[0]):
+        matrix.append([0 for _ in range(len(matrix[0]))])
 
 def get_left_corner(matrix):
     for row in range(len(matrix)):
@@ -102,13 +92,13 @@ def get_right_corner(matrix):
 def format_polyomino(matrix, n):
     empty_rows = 0
     counter = 0
-    while (n - empty_rows) > ((n+1) // 2):
+    while (len(matrix) - empty_rows) > ((n+1) // 2):
         empty_rows = 0
         for i in matrix:
             if not(any(i)):
                 empty_rows += 1
-        
-        if (n - empty_rows) > ((n+1) // 2):
+
+        if (len(matrix) - empty_rows) > ((n+1) // 2):
             rotate_90(matrix)
             counter += 1
 
@@ -132,8 +122,7 @@ def format_polyomino(matrix, n):
                     break
             else:
                 removeColumn(column, matrix)
-                continue
-            break
+                break
 
 
     # get number of empty rows
@@ -159,8 +148,8 @@ def check_equality(input, target):
     equality = True
 
     #Checks translational equality
-    for row in range(target_corners[0][0], target_corners[1][0]):
-        for column in range(target_corners[0][1], target_corners[1][1]):
+    for row in range(target_corners[0][0], target_corners[1][0] + 1):
+        for column in range(target_corners[0][1], target_corners[1][1] + 1):
             if input[input_corners[0][0] + row - target_corners[0][0]][input_corners[0][1] + column - target_corners[0][1]] != target[row][column]:
                 equality = False
                 return equality
@@ -168,7 +157,8 @@ def check_equality(input, target):
     return equality
 
 def check_redundance(current_shape, shapes_arr, n):
-    make_square(current_shape, cols_to_rem = n-1 - n // 2)
+    current_shape = [row.copy() for row in current_shape]
+    make_square(current_shape)
     for i in range(4):
         for j in shapes_arr:
             if check_equality(current_shape, j):
@@ -206,6 +196,7 @@ def try_add_shape(new_shape, shapes, n):
         for i in new_shape:
             print(i)
         print("----------")
+        make_square(new_shape)
         format_polyomino(new_shape, n)
         shapes.append(new_shape)    
 
@@ -328,10 +319,7 @@ def returnShapes(n):
         set_values(shape, n)
 
     for unique_shape in previous_shapes:
-        shapes = generated_shapes[:]
-        created_shapes = extend_shape(unique_shape, rows, columns, n, shapes)
-        for new_shape in created_shapes:
-            generated_shapes.append(new_shape)
+        extend_shape(unique_shape, rows, columns, n, generated_shapes)
 
     return generated_shapes
 
