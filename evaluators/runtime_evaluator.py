@@ -1,8 +1,13 @@
 import cProfile
 import time
+import sys
 
-import array_generator
-import set_generator
+#the generators live in the project root so make it importable
+sys.path.append(".")
+
+from generators import array_generator
+from generators import set_generator
+from generators import memory_efficient_generator
 
 def time_analysis():
     if per_function_analysis:
@@ -35,7 +40,7 @@ def time_analysis():
         shapes = generator.returnShapes(n, use_saved)
         print(f"{n}: {time.time() - start:.3e} seconds")
 
-n = 9
+n = 12
 generator = set_generator
 use_saved = False
 per_function_analysis = False
@@ -61,13 +66,31 @@ Array generator
 9: 2.246e+02 seconds
 
 Set generator
+1: 6.914e-06 seconds
+2: 3.338e-06 seconds
+3: 1.397e-04 seconds
+4: 4.075e-04 seconds
+5: 1.465e-03 seconds
+6: 5.868e-03 seconds
+7: 2.537e-02 seconds
+8: 7.297e-02 seconds
+9: 3.534e-01 seconds
+10: 1.459e+00 seconds
+11: 5.150e+00 seconds
+12: 2.128e+01 seconds
+
+
+Memory efficient generator
 1: 1.907e-06 seconds
-2: 2.384e-06 seconds
-3: 1.318e-04 seconds
-4: 3.777e-04 seconds
-5: 1.489e-03 seconds
-6: 5.111e-03 seconds
-7: 2.070e-02 seconds
-8: 7.458e-02 seconds
-9: 2.944e-01 seconds
+2: 4.053e-06 seconds
+3: 1.323e-03 seconds
+4: 1.055e-03 seconds
+5: 1.654e-03 seconds
+6: 4.325e-03 seconds
+7: 1.569e-02 seconds
+8: 5.828e-02 seconds
+9: 2.278e-01 seconds
+10: 9.567e-01 seconds
+11: 4.148e+00 seconds
+12: 1.650e+01 seconds
 """

@@ -1,4 +1,4 @@
-I created a python file (run_evaluator.py) which computed runtimes for each factor n for my generator.py (now array_generator.py):
+I created a python file (evaluators/runtime_evaluator.py) which computed runtimes for each factor n for my generator.py (now generators/array_generator.py):
 
 | n | runtime (seconds) |
 |--:|------------------:|
@@ -14,7 +14,7 @@ I created a python file (run_evaluator.py) which computed runtimes for each fact
 
 <img src="../Images/Figure_1.png" width=500>
 
-Extrapolating for all values of n up to 17 (the maximum possible for my grid arrangement) I produced the following graph using time_scalability_analysis.py:
+Extrapolating for all values of n up to 17 (the maximum possible for my grid arrangement) I produced the following graph using analysis/time_scalability_analysis.py:
 <img src="../Images/Figure_2.png" width=500>
 
 This gives the following values:
@@ -39,7 +39,7 @@ This gives the following values:
 | 16 | 1.171e+09 | predicted |
 | 17 | 1.162e+10 | predicted |
 
-This would mean running the generator for n=17 would take over 300 years so I developed a per function analysis flag in run_evaluator.py which showed me what percentage of runtime was occupied by each of the top 10 longest running functions:
+This would mean running the generator for n=17 would take over 300 years so I developed a per function analysis flag in evaluators/runtime_evaluator.py which showed me what percentage of runtime was occupied by each of the top 10 longest running functions:
 
 | Rank | Function | Occupancy |
 |-----:|----------|----------:|
@@ -64,7 +64,7 @@ Using a hash set would allow for O(1) lookups as long as all polyominos are conv
 4. This standard form is then added to the hash set
 5. When a new shape is generated it goes through this process and is checked against the hash set to check for uniqueness
 
-Applying all of this in set_generator.py lowered the scaling factor from 9.93 to 4.60 and allowed for generation up to n=17 to only take 1 day (a 130,000x speed increase):
+Applying all of this in generators/set_generator.py lowered the scaling factor from 9.93 to 4.60 and allowed for generation up to n=17 to only take 1 day (a 130,000x speed increase):
 
 | n | runtime (seconds) | source |
 |--:|------------------:|--------|
@@ -88,6 +88,6 @@ Applying all of this in set_generator.py lowered the scaling factor from 9.93 to
 
 <img src="../Images/Figure_3.png" width=500>
 
-Results from time_scalability_analysis.py
+Results from analysis/time_scalability_analysis.py
 
 This proves my hypothesis that the previous redundancy checks were greatly affecting scalability but there is still a gap between the new scaling factor of 4.6 and my prediction of 3.6. The problem with this predicted figure is that it ignored the fact that as n scales the shapes get bigger and so the remaining transformational work (translating, rotating and mirroring) that has to be done to standardise the results becomes more computationally intensive.

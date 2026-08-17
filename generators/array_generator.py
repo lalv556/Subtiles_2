@@ -1,6 +1,5 @@
 import json
 import os
-import test_cases
 
 def getMax(matrix):
     max = -1
@@ -314,7 +313,7 @@ def returnShapes(n, use_saved=False):
 
     if use_saved:
         try:
-            with open(f"results/polyominoes_{n-1}.json") as file:
+            with open(f"results/arrays/polyominoes_{n-1}.json") as file:
                 previous_shapes = json.load(file)
         except FileNotFoundError:
             previous_shapes = returnShapes(n-1, use_saved)
@@ -342,8 +341,8 @@ def returnShapes(n, use_saved=False):
     #returnShapes(n-1)
 
 def save_shapes(shapes, n):
-    os.makedirs("results", exist_ok=True)
-    with open(f"results/polyominoes_{n}.json", "w") as file:
+    os.makedirs("results/arrays", exist_ok=True)
+    with open(f"results/arrays/polyominoes_{n}.json", "w") as file:
         json.dump(shapes, file)
 
 if __name__ == "__main__":
