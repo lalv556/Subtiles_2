@@ -14,7 +14,7 @@ I created a python file (run_evaluator.py) which computed runtimes for each fact
 
 <img src="../Images/Figure_1.png" width=500>
 
-Extrapolating for all values of n up to 17 (the maximum possible for my grid arrangement) I produced the following graph using scalability_analysis.py:
+Extrapolating for all values of n up to 17 (the maximum possible for my grid arrangement) I produced the following graph using time_scalability_analysis.py:
 <img src="../Images/Figure_2.png" width=500>
 
 This gives the following values:
@@ -87,5 +87,7 @@ Applying all of this in set_generator.py lowered the scaling factor from 9.93 to
 | 17 | 8.728e+04 | predicted |
 
 <img src="../Images/Figure_3.png" width=500>
+
+Results from time_scalability_analysis.py
 
 This proves my hypothesis that the previous redundancy checks were greatly affecting scalability but there is still a gap between the new scaling factor of 4.6 and my prediction of 3.6. The problem with this predicted figure is that it ignored the fact that as n scales the shapes get bigger and so the remaining transformational work (translating, rotating and mirroring) that has to be done to standardise the results becomes more computationally intensive.
