@@ -1,10 +1,16 @@
-Currently generators/set_generator.py generates every possible nth polyomino even though it is not possible for every polyomino to appear in a puzzle grid. By adding restrictions for what can appear in a grid, certain polyominos can be filtered out. Early filtering provides exponential gains at each subsequent value of n since a key rule of this puzzle is that any n+1th polyomino must be an extension of the nth polyomino.
+# Problem Specific Pruning
+
+## The Restriction Idea
+
+Currently `generators/set_generator.py` generates every possible nth polyomino even though it is not possible for every polyomino to appear in a puzzle grid. By adding restrictions for what can appear in a grid, certain polyominos can be filtered out. Early filtering provides exponential gains at each subsequent value of n since a key rule of this puzzle is that any n+1th polyomino must be an extension of the nth polyomino.
 
 Unpruned generation counts:
 
 | n | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 |
 |---|--:|--:|--:|--:|--:|--:|--:|--:|--:|---:|---:|---:|---:|---:|---:|---:|---:|
 | shapes | 1 | 1 | 2 | 5 | 12 | 35 | 108 | 369 | 1285 | 4655 | 17073 | 63600 | 238591 | 901971 | 3426576 | 13079255 | 50107909 |
+
+## A Worked Example
 
 Each puzzle already contains some restrictions for how the polyominos must fit by including squares that need to contain specific numbers. Below is a test case where you can see this visually:
 
@@ -83,9 +89,11 @@ arrangement_6 = [
 
 This is significantly less than the 35 that would have been generated using the regular generator.
 
-In practice we can display the whole board in a text file inside the boards folder showing the whole visible board and using it to set restrictions:
+## Whole-Board Patterns
 
-boards/test_board_8.txt for our test case:
+In practice we can display the whole board in a text file inside the `boards` folder showing the whole visible board and using it to set restrictions:
+
+`boards/test_board_8.txt` for our test case:
 ```
 3 0 0 2 0 0
 0 4 0 0 0 0
@@ -95,7 +103,7 @@ boards/test_board_8.txt for our test case:
 0 0 0 0 0 6
 ```
 
-The board once converted into a 2D list for n=6 using make_pattern():
+The board once converted into a 2D list for n=6 using `make_pattern()`:
 ```python
 #make_pattern(board, 6)
 [
@@ -116,11 +124,13 @@ Each generated shape is then tested in every orientation, rotation and position 
 
 This filtering happens during generation rather than after it. Each generation is filtered before it gets extended, meaning a pruned shape never creates any children. This provides exponential gains as new generations only build off valid previous ones.
 
-All of this early pruning was implemented in generators/selective_pruning.py with results stored in results/early_pruning in a subfolder based on the board pruning was done using.
+All of this early pruning was implemented in `generators/selective_pruning.py` with results stored in `results/early_pruning` in a subfolder based on the board pruning was done using.
 
-Inputting the test8 board produced the following numbers of polyominos:
+## Results
 
-<img src="../Images/Figure_6.png" width=500>
+Inputting the `test8` board produced the following numbers of polyominos:
+
+<img src="../images/Figure_6.png" width=500>
 
 | n | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |---|--:|--:|--:|--:|--:|--:|--:|
@@ -129,9 +139,9 @@ Inputting the test8 board produced the following numbers of polyominos:
 
 Individual numbers on the board are barely pruned as seen for n<=4, since a single clue in open space is barely restrictive.
 
-Applying this now for the real puzzle using the board in boards/subtiles_2.txt:
+Applying this now for the real puzzle using the board in `boards/subtiles_2.txt`:
 
-<img src="../Images/Figure_7.png" width=500>
+<img src="../images/Figure_7.png" width=500>
 
 | n | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 |
 |---|--:|--:|--:|--:|--:|--:|--:|--:|--:|---:|---:|---:|---:|---:|---:|---:|
